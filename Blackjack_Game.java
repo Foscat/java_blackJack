@@ -1,5 +1,6 @@
 package techTalentSouth;
 
+
 import java.util.Random;
 import java.util.Scanner;
 
@@ -24,59 +25,48 @@ public class Blackjack_Game {
 //	My user prompt
 //	Scanner always returns a string so function needs to be String
 	public static String hitOrStay(){
+		String response = "response";
+		
 //		Declare scanner
 		Scanner HorS = new Scanner(System.in);
 		
 		System.out.println("Hit or stay? Type Hit for hit all other inputs stay");
 		String hitStay = HorS.next();
 		
-		String response = "response";
-		boolean checkScore = over21();
-		if(myScore == 21){
-			System.out.println("Winner winner chicken dinner 2");
-			getWinner();
-		}
-		if(checkScore == true){
-			System.out.println("You busted bucco!");
-			getWinner();
-		}
-		
-		if(hitStay.equals("Hit")){
-			
+		if(hitStay.equals("hit")){
 			int value = valueGiver();
-			valueAdder(value);
-			
-			boolean busted = over21();
-			if(myScore == 21){
-				return	response = "Yayy you did it!";
-			} 
-			if(busted == false){
-				hitOrStay();
+			int newVal =valueAdder(value);
+			if(newVal > 21){
+				System.out.println("you busted");
+				response = "you busted";
 			}
-			if(busted == true){
+			else{
+			hitOrStay();
+			response = "On like donkey kong";
 			}
-				return	response = "You busted game over!";
-			}
+		}
 		else{
 			getWinner();
-			return response = "We respect your decision";
-			
+			response = "We respect your decision";	
 		}
-			
+		return response;
 		}
 	//////////////////////////////////////////////////////////////////////////////////////
 	public static boolean over21(){
 		if(myScore <= 20){
 			return false;
 		}
-		if(myScore == 21){
+		 if(myScore == 21){
 			System.out.print("Winner Winner chiken dinner!");
 			getWinner();
+			return false;
 		}
 		if(myScore > 21){
 			return true;
 		}
-		return false;
+		else{
+			return true;
+		}
 	}
 	///////////////////////////////////////////////////////////////////////////////////////
 	
@@ -84,7 +74,7 @@ public class Blackjack_Game {
 		int thierScore = computer();
 		if(myScore > 21){
 			if(myScore < thierScore){
-				System.out.println("User busted but score was lower than computer so there is tht");
+				System.out.println("User busted but score was lower than computer so there is that");
 			}
 			else{
 				System.out.println("Your pretty good a losing");
@@ -95,13 +85,12 @@ public class Blackjack_Game {
 				System.out.println("You beat thier score!");
 			}
 			else if(thierScore > 21){
-				System.out.println("They busted you win!!");
+				System.out.println("They busted so you win!!");
 			}
 			else{
 				System.out.println("They beat your score! But hey you didnt bust..");
 			}
 		}
-//		System.out.print("winner");
 
 	}
 	
@@ -114,9 +103,13 @@ public class Blackjack_Game {
 				"six", "seven", "eight", "nine", "ten",
 				"jack", "queen", "king"
 				}; 
-		int compChoice = rand.nextInt(12);
+		int compChoice = rand.nextInt(13);
 		String newCard = deck[compChoice];
-		System.out.println("Random card drawn: " + newCard);
+		
+		String suites[] = {"hearts", "clubs", "spades", "diamonds"};
+		int randSuite = rand.nextInt(3);
+		String newSuite = suites[randSuite];
+		System.out.println("Random card drawn: " + newCard + " of " + newSuite);
 		return newCard;
 	}
 	/////////////////////////////////////////////////////////////////////////////////
@@ -126,7 +119,7 @@ public class Blackjack_Game {
 		//Test random card
 		String card = randomCard();
 		int output =0 ;
-		System.out.println(card);
+//		System.out.println(card);
 		
 		//ace if
 		if(card.equals("ace")){
@@ -134,10 +127,10 @@ public class Blackjack_Game {
 			System.out.println("you got a ace");
 			
 			Random rand = new Random();
-			int aceVal = rand.nextInt(3);
+			int aceVal = rand.nextInt(2) + 1;
 			
 			//ace value changer
-			if(aceVal == 0){
+			if(aceVal == 1){
 				output = 1;
 			}else{
 				output = 11;
@@ -207,7 +200,7 @@ public class Blackjack_Game {
 		Scanner start = new Scanner(System.in);
 		
 		System.out.println("Play a game? yes for yes anything else for no");
-		String starter = start.next();
+		String starter = start.nextLine();
 		if(starter.equals("yes")){
 			int starterDeck = twoCardSpecial();
 			myScore += starterDeck; 
@@ -224,8 +217,8 @@ public class Blackjack_Game {
 	
 	public static int computer(){
 
-		Random rand = new Random();
-		int compChoice = rand.nextInt(40);
+		Random rand = new Random();  
+		int compChoice = twoCardSpecial();
 		System.out.println("Computer score " + compChoice);
 		return compChoice; 
 	}
